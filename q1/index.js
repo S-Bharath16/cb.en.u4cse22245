@@ -1,14 +1,17 @@
 const express = require("express");
 const app = express();
-const stockRoutes = require("./routes/stocks"); // Import the router
+const stockRoutes = require("./routes/stocks"); 
 
-// Middleware
+
 app.use(express.json());
 
-// Register routes
-app.use("/", stockRoutes); // Mount the router
+const cors = require("cors");
+app.use(cors());
 
-// Start the server
+
+app.use("/", stockRoutes); 
+
+
 const PORT = 8000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

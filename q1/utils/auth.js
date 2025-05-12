@@ -21,7 +21,7 @@ async function getAccessToken() {
   });
 
   cachedToken = response.data.access_token;
-  tokenExpiry = response.data.expires_in;
+  tokenExpiry = now + response.data.expires_in;
 
   return cachedToken;
 }

@@ -1,4 +1,3 @@
-// stocks.js
 const express = require("express");
 const router = express.Router();
 const { fetchPriceHistory } = require("../utils/fetch");

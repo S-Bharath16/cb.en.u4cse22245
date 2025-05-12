@@ -1,3 +1,4 @@
+// fetch.js
 const axios = require("axios");
 const { getAccessToken } = require("./auth");
 
@@ -13,6 +14,7 @@ async function fetchPriceHistory(ticker, minutes) {
     }
   );
 
+  console.log("API Response:", response.data); // Debug print
   return response.data;
 }
 

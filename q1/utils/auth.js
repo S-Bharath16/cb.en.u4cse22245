@@ -2,12 +2,12 @@ const axios = require("axios");
 require("dotenv").config();
 
 let cachedToken = null;
-let tokenExpirationTime = 0; 
+let tokenExpiry = null;
 
 async function getAccessToken() {
-  const currentTime = Date.now() / 1000; 
-  
-  if (cachedToken && tokenExpirationTime > currentTime) {
+  const now = Math.floor(Date.now() / 1000);
+
+  if (cachedToken && tokenExpiry && now < tokenExpiry - 60) {
     return cachedToken;
   }
 
@@ -21,7 +21,7 @@ async function getAccessToken() {
   });
 
   cachedToken = response.data.access_token;
-  tokenExpirationTime = currentTime + response.data.expires_in;
+  tokenExpiry = response.data.expires_in;
 
   return cachedToken;
 }

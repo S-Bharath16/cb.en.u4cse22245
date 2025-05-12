@@ -1,26 +1,44 @@
+// stocks.js
 const express = require("express");
+const router = express.Router();
 const { fetchPriceHistory } = require("../utils/fetch");
 
-const router = express.Router();
+function calculateAverage(prices) {
+  if (prices.length === 0) return null;
+  const total = prices.reduce((sum, p) => sum + p.price, 0);
+  return total / prices.length;
+}
 
-router.get("/:ticker", async (req, res) => {
-  const { minutes, aggregation } = req.query;
-  const { ticker } = req.params;
-
-  if (aggregation !== "average") {
-    return res.status(400).json({ error: "Only 'average' aggregation is supported." });
-  }
-
+router.get("/stocks/:ticker", async (req, res) => {
   try {
-    const prices = await fetchPriceHistory(ticker, minutes);
-    const average = prices.reduce((acc, p) => acc + p.price, 0) / prices.length;
+    const ticker = req.params.ticker;
+    const minutes = req.query.minutes || 5;
+    const aggregation = req.query.aggregation || "average";
 
-    return res.json({
-      averageStockPrice: average,
-      priceHistory: prices
-    });
+    const prices = await fetchPriceHistory(ticker, minutes);
+
+    if (!prices || prices.length === 0) {
+      return res.json({
+        averageStockPrice: null,
+        priceHistory: []
+      });
+    }
+
+    let result;
+    if (aggregation === "average") {
+      const averagePrice = calculateAverage(prices);
+      result = {
+        averageStockPrice: averagePrice,
+        priceHistory: prices
+      };
+    } else {
+      result = { priceHistory: prices };
+    }
+
+    res.json(result);
   } catch (err) {
-    return res.status(500).json({ error: "Something went wrong", details: err.message });
+    console.error("Error in /stocks/:ticker route:", err.message);
+    res.status(500).json({ error: "Something went wrong", details: err.message });
   }
 });
 

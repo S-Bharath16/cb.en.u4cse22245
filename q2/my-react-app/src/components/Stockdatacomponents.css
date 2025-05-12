@@ -1,0 +1,75 @@
+/* StockData.css */
+.stock-data-container {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 2rem;
+  }
+  
+  .stock-data-container h2 {
+    font-size: 2rem;
+    color: #007bff;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  
+  .stock-data-container input,
+  .stock-data-container select {
+    padding: 10px;
+    font-size: 1rem;
+    margin: 10px 0;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .stock-data-container button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .stock-data-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .stock-data-container .error {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .stock-info {
+    margin-top: 20px;
+  }
+  
+  .stock-info h3 {
+    font-size: 1.8rem;
+    color: #333;
+  }
+  
+  .stock-info p {
+    font-size: 1.2rem;
+  }
+  
+  .price-history ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .price-history li {
+    font-size: 1.1rem;
+    margin: 10px 0;
+  }
+  
+  .price-history li span {
+    font-weight: bold;
+  }
+  

@@ -3,22 +3,22 @@ import axios from "axios";
 import "./Stockdatacomponents.css";
 
 const StockData = () => {
-  const [ticker, setTicker] = useState(""); // For user input
-  const [minutes, setMinutes] = useState(5); // Default minutes
-  const [aggregation, setAggregation] = useState("average"); // Default aggregation
-  const [stockData, setStockData] = useState(null); // To store the fetched stock data
-  const [error, setError] = useState(""); // To store any error messages
+  const [ticker, setTicker] = useState("");
+  const [minutes, setMinutes] = useState(5);
+  const [aggregation, setAggregation] = useState("average");
+  const [stockData, setStockData] = useState(null);
+  const [error, setError] = useState("");
 
   const fetchStockData = async () => {
     try {
-      setError(""); // Clear previous errors
+      setError("");
       const response = await axios.get(`http://localhost:8000/stocks/${ticker}`, {
         params: {
           minutes: minutes,
           aggregation: aggregation,
         },
       });
-      setStockData(response.data); // Store the data in the state
+      setStockData(response.data);
     } catch (err) {
       setError("Failed to fetch stock data.");
       console.error(err);
@@ -26,29 +26,34 @@ const StockData = () => {
   };
 
   return (
-    <div>
-      <h2>Stock Data</h2>
-      <div>
+    <div className="stock-container">
+      <h2 className="heading">📊 Stock Data Lookup</h2>
+
+      <div className="input-group">
         <label>
           Ticker:
           <input
             type="text"
             value={ticker}
             onChange={(e) => setTicker(e.target.value)}
+            placeholder="e.g., AAPL"
           />
         </label>
       </div>
-      <div>
+
+      <div className="input-group">
         <label>
           Minutes:
           <input
             type="number"
             value={minutes}
             onChange={(e) => setMinutes(e.target.value)}
+            min="1"
           />
         </label>
       </div>
-      <div>
+
+      <div className="input-group">
         <label>
           Aggregation:
           <select
@@ -60,30 +65,35 @@ const StockData = () => {
           </select>
         </label>
       </div>
-      <button onClick={fetchStockData}>Get Stock Data</button>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <button className="fetch-button" onClick={fetchStockData}>
+        Get Stock Data
+      </button>
+
+      {error && <p className="error">{error}</p>}
 
       {stockData && (
-        <div>
-          <h3>Stock Data for {ticker}</h3>
-          <div>
-            {aggregation === "average" && stockData.averageStockPrice && (
-              <p>Average Stock Price: {stockData.averageStockPrice}</p>
-            )}
-            {stockData.priceHistory && stockData.priceHistory.length > 0 && (
-              <div>
-                <h4>Price History</h4>
-                <ul>
-                  {stockData.priceHistory.map((price, index) => (
-                    <li key={index}>
-                      Price: {price.price}, Last Updated: {price.lastUpdatedAt}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
+        <div className="result">
+          <h3>📈 Results for: {ticker.toUpperCase()}</h3>
+          {aggregation === "average" && stockData.averageStockPrice && (
+            <p>
+              <strong>Average Price:</strong> ${stockData.averageStockPrice}
+            </p>
+          )}
+
+          {stockData.priceHistory && stockData.priceHistory.length > 0 && (
+            <div>
+              <h4>Price History</h4>
+              <ul>
+                {stockData.priceHistory.map((price, index) => (
+                  <li key={index}>
+                    💲 <strong>{price.price}</strong> — 🕒{" "}
+                    {new Date(price.lastUpdatedAt).toLocaleString()}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </div>

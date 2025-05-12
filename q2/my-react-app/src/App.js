@@ -1,5 +1,6 @@
 import React from "react";
 import StockData from "./components/Stockdatacomponents";
+import './App.css';
 
 const App = () => {
   return (
